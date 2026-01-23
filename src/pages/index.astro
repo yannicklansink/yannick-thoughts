@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const allNotes = await getCollection('notes');
+const sortedNotes = allNotes.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Thoughts">
+  <header class="mb-12">
+    <h1 class="text-3xl font-semibold mb-2">Thoughts</h1>
+    <p class="text-gray-600">Personal notes and ideas</p>
+  </header>
+
+  <div class="space-y-6">
+    {sortedNotes.map((note) => (
+      <article class="group">
+        <a href={`/${note.id}`} class="block hover:bg-gray-50 -mx-3 px-3 py-2 rounded-md transition-colors">
+          <h2 class="text-xl font-medium mb-1 group-hover:text-blue-600 transition-colors">
+            {note.data.title}
+          </h2>
+          <div class="flex items-center gap-3 text-sm text-gray-500 mb-2">
+            <time datetime={note.data.date.toISOString()}>
+              {note.data.date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </time>
+            {note.data.tags.length > 0 && (
+              <div class="flex gap-2">
+                {note.data.tags.map((tag) => (
+                  <span class="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+          <p class="text-gray-700 leading-relaxed">
+            {note.data.description}
+          </p>
+        </a>
+      </article>
+    ))}
+  </div>
+</BaseLayout>

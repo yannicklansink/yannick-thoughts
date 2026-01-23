@@ -1,0 +1,167 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getBacklinksForNote, transformWikiLinks } from '../utils/wikilinks';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const { Content } = await note.render();
+const backlinks = await getBacklinksForNote(note.id);
+---
+
+<BaseLayout title={note.data.title} description={note.data.description}>
+  <nav class="mb-8">
+    <a href="/" class="text-gray-600 hover:text-gray-900 text-sm">← Back to all notes</a>
+  </nav>
+
+  <article class="prose-custom">
+    <header class="mb-8">
+      <h1 class="text-4xl font-semibold mb-3">{note.data.title}</h1>
+      <div class="flex items-center gap-3 text-sm text-gray-500">
+        <time datetime={note.data.date.toISOString()}>
+          {note.data.date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}
+        </time>
+        {note.data.tags.length > 0 && (
+          <div class="flex gap-2">
+            {note.data.tags.map((tag) => (
+              <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+      <Content />
+    </div>
+
+    {backlinks.length > 0 && (
+      <footer class="mt-12 pt-8 border-t border-gray-200">
+        <h2 class="text-lg font-medium mb-4 text-gray-700">Linked from</h2>
+        <ul class="space-y-2">
+          {backlinks.map((backlink) => (
+            <li>
+              <a
+                href={`/${backlink.slug}`}
+                class="text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                {backlink.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </footer>
+    )}
+  </article>
+</BaseLayout>
+
+<script>
+  // Transform wiki links in the rendered HTML
+  import { transformWikiLinks } from '../utils/wikilinks';
+
+  const contentWrapper = document.querySelector('.content-wrapper');
+  if (contentWrapper) {
+    contentWrapper.innerHTML = transformWikiLinks(contentWrapper.innerHTML);
+  }
+</script>
+
+<style is:global>
+  .prose-custom {
+    @apply max-w-none;
+  }
+
+  .prose-custom .content-wrapper {
+    @apply text-base leading-relaxed text-gray-800;
+  }
+
+  .prose-custom .content-wrapper h1 {
+    @apply text-3xl font-semibold mt-8 mb-4 text-gray-900;
+  }
+
+  .prose-custom .content-wrapper h2 {
+    @apply text-2xl font-semibold mt-8 mb-3 text-gray-900;
+  }
+
+  .prose-custom .content-wrapper h3 {
+    @apply text-xl font-medium mt-6 mb-2 text-gray-900;
+  }
+
+  .prose-custom .content-wrapper p {
+    @apply mb-4;
+  }
+
+  .prose-custom .content-wrapper a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+
+  .prose-custom .content-wrapper a.wiki-link {
+    @apply text-blue-600 hover:text-blue-800 no-underline hover:underline font-medium;
+  }
+
+  .prose-custom .content-wrapper ul,
+  .prose-custom .content-wrapper ol {
+    @apply mb-4 pl-6;
+  }
+
+  .prose-custom .content-wrapper li {
+    @apply mb-2;
+  }
+
+  .prose-custom .content-wrapper ul > li {
+    @apply list-disc;
+  }
+
+  .prose-custom .content-wrapper ol > li {
+    @apply list-decimal;
+  }
+
+  .prose-custom .content-wrapper code {
+    @apply px-1.5 py-0.5 bg-gray-100 text-gray-800 rounded text-sm font-mono;
+  }
+
+  .prose-custom .content-wrapper pre {
+    @apply mb-4 p-4 bg-gray-900 text-gray-100 rounded-lg overflow-x-auto;
+  }
+
+  .prose-custom .content-wrapper pre code {
+    @apply p-0 bg-transparent text-gray-100;
+  }
+
+  .prose-custom .content-wrapper blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic text-gray-700 my-4;
+  }
+
+  .prose-custom .content-wrapper img {
+    @apply rounded-lg my-6;
+  }
+
+  .prose-custom .content-wrapper hr {
+    @apply my-8 border-gray-200;
+  }
+
+  .prose-custom .content-wrapper table {
+    @apply w-full border-collapse my-4;
+  }
+
+  .prose-custom .content-wrapper th,
+  .prose-custom .content-wrapper td {
+    @apply border border-gray-300 px-4 py-2;
+  }
+
+  .prose-custom .content-wrapper th {
+    @apply bg-gray-50 font-semibold text-left;
+  }
+</style>
