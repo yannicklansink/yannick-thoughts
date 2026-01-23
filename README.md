@@ -1,1 +1,3 @@
 # yannick-thoughts
+
+a place to share my ideas, lots to come...
