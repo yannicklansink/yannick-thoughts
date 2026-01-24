@@ -1,0 +1,46 @@
+@import "highlight.js/styles/github-dark.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fafafa;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Code block styling */
+pre {
+  @apply rounded-lg p-4 overflow-x-auto text-sm;
+}
+
+code {
+  @apply text-sm;
+}
+
+pre > code {
+  @apply p-0;
+}
+
+/* Inline code */
+:not(pre) > code {
+  @apply bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm;
+}
+
+/* Wiki link styling */
+.prose a {
+  @apply text-blue-600 dark:text-blue-400 no-underline hover:underline;
+}
