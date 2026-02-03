@@ -69,26 +69,46 @@ export default function HomePage() {
           <cite className="text-sm not-italic">— Petyr "Littlefinger" Baelish</cite>
         </blockquote>
 
-      <div className="mt-8 space-y-6">
-        {notes.map((n) => (
-          <div key={n.slug}>
-            <Link href={`/${n.slug}`} className="text-xl text-blue-600 dark:text-blue-400 hover:underline">
-              {n.title}
-            </Link>
-            <div className="text-sm opacity-70">{n.date}</div>
-            {n.description && <p className="mt-1">{n.description}</p>}
-            {n.tags.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-2 text-sm">
-                {n.tags.map((t) => (
-                  <span key={t} className="rounded border px-2 py-0.5 opacity-70">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+        <div className="mt-8 space-y-6">
+          {notes.map((n) => (
+            <div key={n.slug}>
+              <Link href={`/${n.slug}`} className="text-xl text-blue-600 dark:text-blue-400 hover:underline">
+                {n.title}
+              </Link>
+              <div className="text-sm opacity-70">{n.date}</div>
+              {n.description && <p className="mt-1">{n.description}</p>}
+              {n.tags.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2 text-sm">
+                  {n.tags.map((t) => (
+                    <span key={t} className="rounded border px-2 py-0.5 opacity-70">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+          <h2 className="text-2xl font-semibold">Inspiring Links</h2>
+          <blockquote className="mt-4 border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-600 dark:text-gray-400">
+            <p>"Make something people want."</p>
+            <cite className="text-sm not-italic">— Paul Graham</cite>
+          </blockquote>
+          <ul className="mt-4 space-y-2 text-base">
+            <li>
+              <a
+                href="https://www.paulgraham.com/articles.html"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Paul Graham — Essays
+              </a>
+            </li>
+          </ul>
+        </section>
       </main>
     </>
   );
