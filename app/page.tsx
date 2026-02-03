@@ -107,6 +107,16 @@ export default function HomePage() {
                 Paul Graham — Essays
               </a>
             </li>
+            <li>
+              <a
+                href="https://news.ycombinator.com/"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Hacker News
+              </a>
+            </li>
           </ul>
         </section>
       </main>
