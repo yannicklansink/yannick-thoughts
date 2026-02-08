@@ -12,3 +12,7 @@ Dit linkt naar [[tweede-idee]] omdat het erop voortbouwt.
 ```ts
 type Note = { slug: string; title: string };
 ```
+
+## Instagram embed test
+
+<Instagram id="DMs-h6KIoGy" kind="reel" />

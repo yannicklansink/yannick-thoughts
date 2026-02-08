@@ -9,7 +9,14 @@ interface TextNode extends Node {
 
 const WIKI_RE = /\[\[([a-zA-Z0-9-_\/]+)\]\]/g;
 
-export const remarkWikiLinks: Plugin = () => {
+type WikiLinkOptions = {
+  basePath?: string;
+};
+
+export const remarkWikiLinks: Plugin<[WikiLinkOptions?]> = (options = {}) => {
+  const basePath = options.basePath ?? "";
+  const prefix = basePath.endsWith("/") ? basePath.slice(0, -1) : basePath;
+
   return (tree: Node) => {
     visit(tree, "text", (node: TextNode, index: number | undefined, parent: Parent | undefined) => {
       if (index === undefined || !parent) return;
@@ -29,9 +36,11 @@ export const remarkWikiLinks: Plugin = () => {
           parts.push({ type: "text", value: value.slice(last, start) } as TextNode);
         }
 
+        const url = `${prefix}/${slug}`.replace(/\/+/g, "/");
+
         parts.push({
           type: "link",
-          url: `/${slug}`,
+          url,
           children: [{ type: "text", value: slug }],
         } as Node);
 
