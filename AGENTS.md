@@ -46,15 +46,7 @@ This ensures `/nl/<slug>` still works even when only the English version exists.
 - If only English exists, `/nl/<slug>` should still render via fallback.
 
 ## MDX embeds
-MDX components available in posts:
-- `<Instagram id="..." kind="reel|p|tv" ratio="9 / 16" height={480} />`
-- `<TikTok id="..." ratio="9 / 16" height={575} />`
-- `<Tweet id="..." height={600} />`
-
-Defaults:
-- Instagram reels use `ratio="9 / 16"` and `maxWidth=540`.
-- TikTok uses `height=575` and `maxWidth=325`.
-- Tweets are clamped to `minWidth=220` and `maxWidth=550`, height is adjustable.
+MDX components available in posts: `<Instagram id="..." />`, `<TikTok id="..." />`, `<Tweet id="..." />`.
 
 ## Adding a new post
 1. Create the English file in `content/notes/en/`.
