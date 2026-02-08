@@ -9,6 +9,9 @@ This is a Next.js App Router blog deployed on Vercel.
 - `npm run start` — start production server
 - `npm run lint` — lint
 
+## Next.js params (Next 15)
+- `params` may be async (`Promise<...>`) in App Router pages; await it in page and metadata functions.
+
 ## Blog languages
 The site is bilingual with language prefixes in the URL:
 - English: `/en`
